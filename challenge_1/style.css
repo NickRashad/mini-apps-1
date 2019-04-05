@@ -16,6 +16,11 @@ body {
 }
 table {
   border-collapse: collapse;
+  margin: auto;
+}
+nav li {
+  text-align: center;
+  list-style:none;
 }
 
 th, td {
@@ -24,4 +29,19 @@ th, td {
   height: 100px;
   text-align: center;
   font-size: 80px;
+}
+.scores {
+  text-align: center;
+  /* display: inline; */
+  margin: auto;
+}
+
+.playerX {
+  display: inline-block;
+  padding: 30px;
+}
+
+.playerO {
+  display: inline-block;
+  padding:10px;
 }
