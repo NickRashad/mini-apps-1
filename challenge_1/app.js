@@ -8,11 +8,25 @@ const swap = () => currentTurn = ! currentTurn;
 
 // Keep track of board
 let board = { 'X': [], 'O': [] };
+const newBoard = () => {
+  for(let player in board) { board[player] = []; }
+};
 const canAdd = (position) => {
   for (let curr in board) {
     if (board[curr].includes(position)) { return false; };
   }
   return true;
+};
+const displayMsg = (decision) => {
+  var message = document.getElementById('UserMessage');
+  if (decision === 'new') {
+    message.innerHTML = `New Game. It is ${move()}'s turn`;
+  } else if (decision === 'tie') {
+    message.innerHTML = 'Tie Game! Please start a new game if you wish to continue';
+  } else {
+    message.innerHTML = `Winner! Congratulations player ${decision}!
+    Please start a new game if you wish to continue`;
+  }
 };
 // Keep track of wins
 let totalWins = { 'X': 0, 'O': 0 };
@@ -22,10 +36,13 @@ const isWin = (curr) => {
   let winningMoves = [ [1,2,3], [4,5,6], [7,8,9],
     [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7] ];
   for (let arr of winningMoves) {
-    if(arr.every(val => board[curr].includes(val))) {
+    if (arr.every(val => board[curr].includes(val))) {
       gameOn = false;
+      displayMsg(curr);
       return true;
-    };
+    } else if (board['X'].length + board['O'].length === 9) {
+      displayMsg('tie');
+    }
   }
 };
 
@@ -47,4 +64,9 @@ squares.forEach((elem) => {
     }
   });
 });
-
+let newGame = document.getElementById("newGame");
+newGame.addEventListener("click", () => {
+  squares.forEach((elem) => elem.innerHTML = "");
+  newBoard();
+  displayMsg('new');
+});

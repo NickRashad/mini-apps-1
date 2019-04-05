@@ -22,13 +22,15 @@ nav li {
   text-align: center;
   list-style:none;
 }
-
+div {
+  text-align: center;
+}
 th, td {
   border: 1px solid black;
   width: 100px;
   height: 100px;
   text-align: center;
-  font-size: 80px;
+  font-size: 70px;
 }
 .scores {
   text-align: center;
