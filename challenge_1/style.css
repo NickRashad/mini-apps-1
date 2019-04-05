@@ -10,3 +10,18 @@ red {
 blue {
   color: #086df1;
 }
+
+body {
+  font-family: Futura, Helvetica, sans-serif;
+}
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  font-size: 80px;
+}
