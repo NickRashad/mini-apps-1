@@ -1,9 +1,12 @@
 // Model
 // Current Player Turn
-let currentTurn = true;
+let currentTurn = sessionStorage.getItem('currentTurn')
+  ? JSON.parse(sessionStorage.getItem('currentTurn'))
+  : true;
 const move = () => currentTurn ? 0 : 1;
 const swap = () => {
   currentTurn = ! currentTurn;
+  sessionStorage.setItem('currentTurn', JSON.stringify(currentTurn));
   displayMsg();
 };
 let players = {
@@ -26,6 +29,7 @@ const newBoard = () => {
   sessionStorage.setItem('board0', JSON.stringify([]));
   sessionStorage.setItem('board1', JSON.stringify([]));
   gameOn = true;
+  sessionStorage.setItem('gameOn', JSON.stringify(true));
   displayMsg('new');
 };
 const canAdd = (position) => {
@@ -52,7 +56,9 @@ let totalWins = {
   '0': JSON.parse(sessionStorage.getItem('score0')) || 0,
   '1': JSON.parse(sessionStorage.getItem('score1')) || 0,
  };
-let gameOn = true;
+let gameOn = sessionStorage.getItem('gameOn')
+  ? JSON.parse(sessionStorage.getItem('gameOn'))
+  : true;
 const isWinner = (winner) => {
   totalWins[winner] += 1;
   sessionStorage.setItem(`score${winner}`, totalWins[winner])
@@ -64,10 +70,12 @@ const isWin = (curr) => {
     [1,4,7], [2,5,8], [3,6,9], [1,5,9], [3,5,7] ];
   for (let arr of winningMoves) {
     if (arr.every(val => board[curr].includes(val))) {
+      sessionStorage.setItem('gameOn', JSON.stringify(false));
       gameOn = false;
       displayMsg(curr);
       return true;
     } else if (board['0'].length + board['1'].length === 9) {
+      sessionStorage.setItem('gameOn', JSON.stringify(false));
       gameOn = false;
       displayMsg('tie');
     } else {
