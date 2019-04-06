@@ -11,9 +11,20 @@ let players = {
   1: 'O',
 };
 // Keep track of board
-let board = { '0': [], '1': [] };
+let board = {
+  '0': JSON.parse(sessionStorage.getItem('board0')) || [],
+  '1': JSON.parse(sessionStorage.getItem('board1')) || [],
+};
+const addToBoard = (pos) => {
+  let curr = move();
+  board[curr].push(pos);
+  console.log('boardcurrent', board[curr]);
+  sessionStorage.setItem(`board${curr}`,JSON.stringify(board[curr]));
+}
 const newBoard = () => {
-  board = { '0': [], '1': [] }
+  board = { '0': [], '1': [] };
+  sessionStorage.setItem('board0', JSON.stringify([]));
+  sessionStorage.setItem('board1', JSON.stringify([]));
   gameOn = true;
   displayMsg('new');
 };
@@ -37,12 +48,15 @@ const displayMsg = (decision) => {
   }
 };
 // Keep track of wins
-let totalWins = { '0': 0, '1': 0 };
+let totalWins = {
+  '0': JSON.parse(sessionStorage.getItem('score0')) || 0,
+  '1': JSON.parse(sessionStorage.getItem('score1')) || 0,
+ };
 let gameOn = true;
 const isWinner = (winner) => {
   totalWins[winner] += 1;
-  document.getElementById('player0-score').innerHTML = totalWins[0];
-  document.getElementById('player1-score').innerHTML = totalWins[1];
+  sessionStorage.setItem(`score${winner}`, totalWins[winner])
+  document.getElementById(`player${winner}-score`).innerHTML = totalWins[winner];
 };
 
 const isWin = (curr) => {
@@ -51,7 +65,6 @@ const isWin = (curr) => {
   for (let arr of winningMoves) {
     if (arr.every(val => board[curr].includes(val))) {
       gameOn = false;
-      console.log(typeof curr);
       displayMsg(curr);
       return true;
     } else if (board['0'].length + board['1'].length === 9) {
@@ -73,9 +86,11 @@ let squares = document.querySelectorAll("th");
 squares.forEach((elem) => {
   elem.addEventListener("click", () => {
     let curr = move();
-    let pos = Number(elem.className);
+    let pos = Number(elem.id);
     if (canAdd(pos) && gameOn) {
-      board[curr].push(pos);
+      console.log('Position', pos);
+      // board[curr].push(pos);
+      addToBoard(pos);
       elem.innerHTML= curr ? 'O' : 'X';
       isWin(curr) ? isWinner(curr.toString()) : swap();
     }
@@ -87,3 +102,18 @@ newGame.addEventListener("click", () => {
   squares.forEach((elem) => elem.innerHTML = "");
   newBoard();
 });
+
+document.getElementById('player0-score').innerHTML = sessionStorage.getItem('score0') || 0;
+document.getElementById('player1-score').innerHTML = sessionStorage.getItem('score1') || 0;
+{
+  let board0 = JSON.parse(sessionStorage.getItem('board0'));
+  let board1 = JSON.parse(sessionStorage.getItem('board1'));
+  for(let pos in board0) {
+    var className = board0[pos].toString();
+    document.getElementById(className).innerHTML = 'X';
+  }
+  for(let pos in board1) {
+    var className = board1[pos].toString();
+    document.getElementById(className).innerHTML = 'O';
+  }
+}
