@@ -1,18 +1,17 @@
+{
 // Model
-/** Current Players
+/** Current Players, Board, & Wins
  *  @players - Holds the names of two different competitors. It can later be changed
  *  @currentTurn - Binary true/false value to indicate whose turn it is
  *  @move - Reveals whose turn it is X or O
+ *  @board - Holds all the board positions for both Player1 and Player2
+ *  @totalWins - Holds total # of wins for both Player1 and Player2
+ *  @gameOn - Boolean value activated upon finding a winner in order to indicate a new game needs to be started
  * */
 let players = { 0: 'X', 1: 'O'};
 let currentTurn = sessionStorage.getItem('currentTurn') ? JSON.parse(sessionStorage.getItem('currentTurn')) : true;
 const move = () => currentTurn ? 0 : 1;
 
-/** Board & Wins
- *  @board - Holds all the board positions for both Player1 and Player2
- *  @totalWins - Holds total # of wins for both Player1 and Player2
- *  @gameOn - Boolean value activated upon finding a winner in order to indicate a new game needs to be started
- * */
 let board = {
   '0': JSON.parse(sessionStorage.getItem('board0')) || [],
   '1': JSON.parse(sessionStorage.getItem('board1')) || [],
@@ -25,8 +24,6 @@ let totalWins = {
 let gameOn = sessionStorage.getItem('gameOn') ? JSON.parse(sessionStorage.getItem('gameOn')) : true;
 
 // View
-// Player's X & O display indicator and score
-// Session Storage ~ https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
 document.getElementById('player0-score').innerHTML = sessionStorage.getItem('score0') || 0;
 document.getElementById('player1-score').innerHTML = sessionStorage.getItem('score1') || 0;
 {
@@ -134,3 +131,5 @@ newGame.addEventListener("click", () => {
   squares.forEach((elem) => elem.innerHTML = "");
   newBoard();
 });
+}
+
