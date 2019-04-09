@@ -22,15 +22,6 @@ app.get('/', (req, res) => {
 
 app.post('/', upload.none(), (req, res, next) => {
   // res.status(200);
-  // csvConverterAsync(req.body.JSONmsg)
-  //   .then((csvString) => {
-  //     fs.writeFile('csvfile.csv', csvFile);
-  //     res.render('csvComplete',{
-  //       columnHeaders: ['one', 'two', 'three'],
-  //       rowData: [['blah', 'blah', 'blahh'], ['genus','species','loci']],
-  //     });
-  //     next();
-  //   });
     csvConvertAsync(req.body.JSONmsg)
       .then((csv) => {
         fs.writeFile('csvfile.csv', csv.string, (err) =>{
@@ -53,8 +44,6 @@ app.post('/', upload.none(), (req, res, next) => {
   next();
 });
 app.listen(port, () => console.log(`Server is up and running on port: ${port}`));
-
-
 
 
 const csvConvert = (initialData) => {
