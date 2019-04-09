@@ -21,14 +21,35 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', upload.none(), (req, res, next) => {
-  res.status(200);
-  var csvFile = csvConverter(req.body.JSONmsg);
-  console.log(csvFile);
-  // res.send(csvFile);
-  res.render('csvComplete',{
-    columnHeaders: ['one', 'two', 'three'],
-    rowData: [['blah', 'blah', 'blahh'], ['genus','species','loci']],
-  });
+  // res.status(200);
+  // csvConverterAsync(req.body.JSONmsg)
+  //   .then((csvString) => {
+  //     fs.writeFile('csvfile.csv', csvFile);
+  //     res.render('csvComplete',{
+  //       columnHeaders: ['one', 'two', 'three'],
+  //       rowData: [['blah', 'blah', 'blahh'], ['genus','species','loci']],
+  //     });
+  //     next();
+  //   });
+    csvConvertAsync(req.body.JSONmsg)
+      .then((csv) => {
+        fs.writeFile('csvfile.csv', csv.string, (err) =>{
+          if(err) throw err;
+          console.log('Success!');
+      })
+      .then(() => {
+        res.render('csvComplete',{
+          columnHeaders: csv.headers,
+          rowData: csv.rows,
+        });
+      });
+    })
+
+
+  // res.render('csvComplete',{
+  //    columnHeaders: ['one', 'two', 'three'],
+  //   rowData: [['blah', 'blah', 'blahh'], ['genus','species','loci']],
+  // });
   next();
 });
 app.listen(port, () => console.log(`Server is up and running on port: ${port}`));
@@ -36,7 +57,7 @@ app.listen(port, () => console.log(`Server is up and running on port: ${port}`))
 
 
 
-const csvConverter = (initialData) => {
+const csvConvert = (initialData) => {
   let paragraph = '';
   let getHeaders = true;
   let recurse = (data) => {
@@ -64,5 +85,13 @@ const csvConverter = (initialData) => {
     }
   };
   recurse(initialData);
-  return paragraph;
+  let lines = paragraph.split('\n');
+  let header = lines[0].split(',');
+  let rows = lines.slice(1).map(row => row.split(','));
+  return {
+    string: paragraph,
+    header: header,
+    rows: rows,
+  };
 };
+var csvConvertAsync = Promise.promisify(csvConvert);
