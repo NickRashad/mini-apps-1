@@ -1,0 +1,27 @@
+<html>
+  <head>
+      <meta charset="utf-8">
+      <title>CSV Report Generator</title>
+      <link rel="stylesheet" href="style.css">
+    </head>
+  <body>
+    <table>
+      <tr>
+        <% if (columnHeaders) { %>
+          <% columnHeaders.forEach((val) => { %>
+            <th><%- val %></th>
+          <% }); %>
+        <% } %>
+      </tr>
+      <% if (rowData) { %>
+      <% rowData.forEach((row) => { %>
+      <tr>
+        <% row.forEach((val) => { %>
+            <th><%- val %></th>
+        <% }); %>
+      <% }); %>
+      </tr>
+     <% } %>
+    </table>
+  </body>
+</html>

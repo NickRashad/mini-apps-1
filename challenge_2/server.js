@@ -6,26 +6,35 @@ const multer = require('multer');
 const upload = multer();
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
+const ejs = require('ejs');
 
 app.use(express.static(path.join(__dirname, 'client')));
 app.use(express.urlencoded({extended: false}))
+app.set('views', path.join(__dirname, 'client/views'));
+app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
 
   res.status(200);
   // res.send('Test!')
-  // res.redirect('/');
+  res.render('/index');
 })
 
 app.post('/', upload.none(), (req, res, next) => {
-  // console.log(JSON.parse(req.body.JSONmsg));
   res.status(200);
   var csvFile = csvConverter(req.body.JSONmsg);
   console.log(csvFile);
-  res.send(csvFile);
+  // res.send(csvFile);
+  res.render('csvComplete',{
+    columnHeaders: ['one', 'two', 'three'],
+    rowData: [['blah', 'blah', 'blahh'], ['genus','species','loci']],
+  });
   next();
 });
 app.listen(port, () => console.log(`Server is up and running on port: ${port}`));
+
+
+
 
 const csvConverter = (initialData) => {
   let paragraph = '';
