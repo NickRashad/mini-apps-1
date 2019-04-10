@@ -5,7 +5,7 @@ const port = 3000;
 const multer = require('multer');
 const upload = multer();
 const Promise = require('bluebird');
-const fs = Promise.promisifyAll(require('fs'));
+const fs = require('fs');
 const ejs = require('ejs');
 
 app.use(express.static(path.join(__dirname, 'client')));
@@ -14,42 +14,32 @@ app.set('views', path.join(__dirname, 'client/views'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-
   res.status(200);
   // res.send('Test!')
   res.render('/index');
-})
+});
 
 app.post('/', upload.none(), (req, res, next) => {
-  // res.status(200);
-    csvConvertAsync(req.body.JSONmsg)
-      .then((csv) => {
-        fs.writeFile('csvfile.csv', csv.string, (err) =>{
-          if(err) throw err;
-          console.log('Success!');
-      })
-      .then(() => {
-        res.render('csvComplete',{
-          columnHeaders: csv.headers,
-          rowData: csv.rows,
-        });
-      });
-    })
-
-
-  // res.render('csvComplete',{
-  //    columnHeaders: ['one', 'two', 'three'],
-  //   rowData: [['blah', 'blah', 'blahh'], ['genus','species','loci']],
-  // });
+  csvConvert(JSON.parse(req.body.JSONmsg), (err, csv) => {
+    if(err) throw err;
+    res.render('csvComplete',{
+      columnHeaders: csv.header,
+      rowData: csv.rows,
+    });
+  });
+//   fs.writeFile('csvfile.csv', csv.string, (err) =>{
+//     if(err) throw err;
+//     console.log('Success!');
+//   })
   next();
 });
 app.listen(port, () => console.log(`Server is up and running on port: ${port}`));
 
 
-const csvConvert = (initialData) => {
+const csvConvert = (initialData, callback) => {
   let paragraph = '';
   let getHeaders = true;
-  let recurse = (data) => {
+  const recurse = (data) => {
     let row = '';
     let headers = '';
     for (let header in data) {
@@ -77,10 +67,10 @@ const csvConvert = (initialData) => {
   let lines = paragraph.split('\n');
   let header = lines[0].split(',');
   let rows = lines.slice(1).map(row => row.split(','));
-  return {
+  callback(null, {
     string: paragraph,
     header: header,
     rows: rows,
-  };
+  });
 };
 var csvConvertAsync = Promise.promisify(csvConvert);
