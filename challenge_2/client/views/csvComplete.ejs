@@ -5,6 +5,11 @@
       <link rel="stylesheet" href="style.css">
     </head>
   <body>
+    <h1>CSV Generator</h1>
+    <form method="POST" enctype="multipart/form-data"><!-- action="/upload_json" -->
+      <textarea id="msg" name="JSONmsg"></textarea>
+      <input type="submit" value="Submit">
+    </form>
     <table>
       <tr>
         <% if (columnHeaders) { %>
@@ -23,5 +28,6 @@
       </tr>
      <% } %>
     </table>
+    <script src="app.js"></script>
   </body>
 </html>
