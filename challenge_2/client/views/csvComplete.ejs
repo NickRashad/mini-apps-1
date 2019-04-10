@@ -8,8 +8,11 @@
     <h1>CSV Generator</h1>
     <form method="POST" enctype="multipart/form-data"><!-- action="/upload_json" -->
       <textarea id="msg" name="JSONmsg"></textarea>
+      <!-- Format multer settings to properly accept a file to be uploaded -->
       <input type="submit" value="Submit">
     </form>
+    <!-- Create a place for the CSV File to be downladed -->
+
     <table>
       <tr>
         <% if (columnHeaders) { %>

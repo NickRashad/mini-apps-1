@@ -9,24 +9,26 @@ const fs = require('fs');
 const ejs = require('ejs');
 
 app.use(express.static(path.join(__dirname, 'client')));
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: false}));
 app.set('views', path.join(__dirname, 'client/views'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
   res.status(200);
-  // res.send('Test!')
   res.render('/index');
 });
 
 app.post('/', upload.none(), (req, res, next) => {
   csvConvert(JSON.parse(req.body.JSONmsg), (err, csv) => {
     if(err) throw err;
+    // Write file to uploads folder
+    // Render the file within the ejs file so that users can upload
     res.render('csvComplete', {
       columnHeaders: csv.header,
       rowData: csv.rows,
     });
   });
+
 //   fs.writeFile('csvfile.csv', csv.string, (err) =>{
 //     if(err) throw err;
 //     console.log('Success!');
