@@ -18,22 +18,20 @@ app.get('/', (req, res) => {
   res.render('/index');
 });
 
-app.post('/', upload.none(), (req, res, next) => {
+app.post('/', upload.none(), (req, res) => {
   csvConvert(JSON.parse(req.body.JSONmsg), (err, csv) => {
     if(err) throw err;
     // Write file to uploads folder
-    // Render the file within the ejs file so that users can upload
-    res.render('csvComplete', {
-      columnHeaders: csv.header,
-      rowData: csv.rows,
-    });
+    fs.writeFile('csvfile.csv', csv.string, (err) =>{
+      if(err) throw err;
+      console.log('Success!');
+      // Render the file within the ejs file so that users can upload
+      res.render('csvComplete', {
+        columnHeaders: csv.header,
+        rowData: csv.rows,
+      });
+    })
   });
-
-//   fs.writeFile('csvfile.csv', csv.string, (err) =>{
-//     if(err) throw err;
-//     console.log('Success!');
-//   })
-  next();
 });
 app.listen(port, () => console.log(`Server is up and running on port: ${port}`));
 
