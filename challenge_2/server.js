@@ -18,11 +18,16 @@ app.get('/', (req, res) => {
   res.render('/index');
 });
 
+app.get('/csvFile', (req, res) => {
+  res.status(200);
+  res.download('./uploads/csvFile.csv');
+});
+
 app.post('/', upload.none(), (req, res) => {
   csvConvert(JSON.parse(req.body.JSONmsg), (err, csv) => {
     if(err) throw err;
     // Write file to uploads folder
-    fs.writeFile('csvfile.csv', csv.string, (err) =>{
+    fs.writeFile('uploads/csvfile.csv', csv.string, (err) =>{
       if(err) throw err;
       console.log('Success!');
       // Render the file within the ejs file so that users can upload
