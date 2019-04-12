@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const port = 3000;
 const multer = require('multer');
-const upload = multer();
+const upload = multer({ dest: 'uploads'});
 const Promise = require('bluebird');
 const fs = require('fs');
 const ejs = require('ejs');
@@ -20,22 +20,24 @@ app.get('/', (req, res) => {
 
 app.get('/csvFile', (req, res) => {
   res.status(200);
-  res.download('./uploads/csvFile.csv');
+  res.download('./downloads/csvFile.csv');
 });
 
-app.post('/', upload.none(), (req, res) => {
-  csvConvert(JSON.parse(req.body.JSONmsg), (err, csv) => {
+app.post('/', upload.single('JSONFile'), (req, res) => {
+  fs.readFile(path.join(__dirname, `uploads/${req.file.filename}`), 'utf8', (err, data) => {
     if(err) throw err;
-    // Write file to uploads folder
-    fs.writeFile('uploads/csvfile.csv', csv.string, (err) =>{
+    csvConvert(JSON.parse(data), (err, csv) => {
       if(err) throw err;
-      console.log('Success!');
-      // Render the file within the ejs file so that users can upload
-      res.render('csvComplete', {
-        columnHeaders: csv.header,
-        rowData: csv.rows,
-      });
-    })
+      // Write file to uploads folder
+      fs.writeFile('downloads/csvfile.csv', csv.string, (err) =>{
+        if(err) throw err;
+        // Render the file within the ejs file so that users can upload
+        res.render('csvComplete', {
+          columnHeaders: csv.header,
+          rowData: csv.rows,
+        });
+      })
+    });
   });
 });
 app.listen(port, () => console.log(`Server is up and running on port: ${port}`));
