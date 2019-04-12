@@ -1,0 +1,15 @@
+.btn {
+  width: 150px;
+  height: 50px;
+  border: 0;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(0deg, #5c0198, #8306ccc5);
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+  text-shadow: 0px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}

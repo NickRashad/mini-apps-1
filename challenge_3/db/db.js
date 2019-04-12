@@ -4,7 +4,7 @@ const mysql = require('mysql');
    host: 'localhost',
    user: 'root',
    password: '',
-   database: '',
+   database: 'checkout',
  });
 
  db.connect((err) => {
