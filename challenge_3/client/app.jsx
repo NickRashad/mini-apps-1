@@ -6,10 +6,12 @@ class App extends React.Component {
       indicator: 0,
     };
     this.nextForm = this.nextForm.bind(this);
+    this.postData = this.postData.bind(this);
   }
 
   postData () {
-    axios.post('/', { test1: this.state }).then((response) => {
+    const data = { one: this.state, two: F1.state};
+    axios.post('/', data ).then((response) => {
       console.log(response);
     });
   }
@@ -162,10 +164,10 @@ class F3 extends React.Component {
           <input type="text" name="creditCardNum" value={this.state.creditCardNum} onChange={this.handleChange} />
         </label>
         <label>Expiry Date:
-          <input type="text" name="creditCardNum" value={this.state.expiryDate} onChange={this.handleChange} />
+          <input type="text" name="expiryDate" value={this.state.expiryDate} onChange={this.handleChange} />
         </label>
         <label>CVV #:
-          <input type="text" name="creditCardNum" value={this.state.cvv} onChange={this.handleChange} />
+          <input type="text" name="cvv" value={this.state.cvv} onChange={this.handleChange} />
         </label>
         <label>Billing Zip Code:
           <input type="text" name="billingZip" value={this.state.billingZip} onChange={this.handleChange} />
