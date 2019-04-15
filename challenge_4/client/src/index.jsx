@@ -5,23 +5,46 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      colorChoice: true
+      colorChoice: true,
+      redMatrix: [
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+      ],
+      yellowMatrix: [
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+      ],
     };
     this.toggleColor = this.toggleColor.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
   toggleColor () {
     let choice = !this.state.colorChoice;
-    console.log(choice);
     this.setState({colorChoice: choice});
   }
 
-  toggle (row, column) {
-
+  /**
+   * @toggle _find available row in matrix to trigger the correct tile and change color_
+   * @isWin _read player matrix to determine if win_
+   *
+   * */
+  toggle (column) {
+  }
+  isWin(player) {
   }
 
   render () {
     return (
       <div className="wrapper">
+        {/* Refactor squares to be built with map */}
         <Square x={0} y={5} color={this.state.colorChoice} toggleColor={this.toggleColor} />
         <Square x={1} y={5} color={this.state.colorChoice} toggleColor={this.toggleColor} />
         <Square x={2} y={5} color={this.state.colorChoice} toggleColor={this.toggleColor} />
@@ -77,8 +100,12 @@ class Square extends React.Component {
     };
     this.column = this.column.bind(this);
   }
+
   column (event){
-    console.log('Column Choice:', event.target.name);
+    /**
+     * _Code currently flips current tile, will need to account for fallthrough_
+     * _Refactor toggle by column & row_
+     * toggle(event.target.name) */
     let nowColor = this.props.color === true ? "red" : "yellow";
     this.props.toggleColor();
     this.setState({ color: nowColor });
