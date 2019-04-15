@@ -1,3 +1,65 @@
 body {
   background-color:rgba(0, 60, 255, 0.027);
+  margin: 40px;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 100px 100px 100px 100px 100px 100px 100px;
+  grid-gap: 5px;
+  background-color: blue;
+}
+span {
+  padding: 20px;
+}
+span [data-x='0'] {
+  position: absolute;
+  left: 100;
+}
+span [data-x='1'] {
+  position: absolute;
+  left: 200;
+}
+span [data-x='2'] {
+  position: absolute;
+  left: 300;
+}
+span [data-x='3'] {
+  position: absolute;
+  left: 400;
+}
+span [data-x='4'] {
+  position: absolute;
+  left: 500;
+}
+span [data-x='5'] {
+  position: absolute;
+  left: 600;
+}
+span [data-x='6'] {
+  position: absolute;
+  left: 700;
+}
+span [data-y='0'] {
+  position: absolute;
+  top: 600;
+}
+span [data-y='1'] {
+  position: absolute;
+  top: 500;
+}
+span [data-y='2'] {
+  position: absolute;
+  top: 400;
+}
+span [data-y='3'] {
+  position: absolute;
+  top: 300;
+}
+span [data-y='4'] {
+  position: absolute;
+  top: 200;
+}
+span [data-y='5'] {
+  position: absolute;
+  top: 100;
 }
