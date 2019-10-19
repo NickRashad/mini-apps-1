@@ -1,2 +1,8 @@
 # mini-apps-1
-This is a project I completed as a student at [hackreactor](http://hackreactor.com). This project was worked on with a pair.
+I have created 3 Single Page Apps from scratch.
+## Challenge1: Tic Tac Toe ##
+ > 
+## Challenge2: CSV Report Generator $$
+ >
+## Challenge3: Multistep Checkout Experience ##
+ >
